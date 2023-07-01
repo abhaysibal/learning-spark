@@ -28,7 +28,7 @@ def incrementCounter(line):
         count += 1
 
 file.foreach(incrementCounter)
-print "Lines with KK6JKQ %d" % count.value
+print("Lines with KK6JKQ %d" % count.value)
 
 
 # Create Accumulator[Int] initialized to 0
@@ -44,7 +44,7 @@ def extractCallSigns(line):
 
 callSigns = file.flatMap(extractCallSigns)
 callSigns.saveAsTextFile(outputDir + "/callsigns")
-print "Blank lines %d" % blankLines.value
+print("Blank lines %d" % blankLines.value)
 
 # Create Accumulators for validating call signs
 validSignCount = sc.accumulator(0)
@@ -68,8 +68,8 @@ contactCounts.count()
 if invalidSignCount.value < 0.1 * validSignCount.value:
     contactCounts.saveAsTextFile(outputDir + "/contactCount")
 else:
-    print ("Too many errors %d in %d" %
-           (invalidSignCount.value, validSignCount.value))
+    print(("Too many errors %d in %d" %
+           (invalidSignCount.value, validSignCount.value)))
 
 # Helper functions for looking up the call signs
 
@@ -108,13 +108,13 @@ def processCallSigns(signs):
     # Create a connection pool
     http = urllib3.PoolManager()
     # the URL associated with each call sign record
-    urls = map(lambda x: "http://73s.com/qsos/%s.json" % x, signs)
+    urls = ["http://73s.com/qsos/%s.json" % x for x in signs]
     # create the requests (non-blocking)
-    requests = map(lambda x: (x, http.request('GET', x)), urls)
+    requests = [(x, http.request('GET', x)) for x in urls]
     # fetch the results
-    result = map(lambda x: (x[0], json.loads(x[1].data)), requests)
+    result = [(x[0], json.loads(x[1].data)) for x in requests]
     # remove any empty results and return
-    return filter(lambda x: x[1] is not None, result)
+    return [x for x in result if x[1] is not None]
 
 
 def fetchCallSigns(input):
@@ -132,7 +132,7 @@ sc.addFile(distScript)
 def hasDistInfo(call):
     """Verify that a call has the fields required to compute the distance"""
     requiredFields = ["mylat", "mylong", "contactlat", "contactlong"]
-    return all(map(lambda f: call[f], requiredFields))
+    return all([call[f] for f in requiredFields])
 
 
 def formatCall(call):
@@ -141,10 +141,10 @@ def formatCall(call):
         call["mylat"], call["mylong"],
         call["contactlat"], call["contactlong"])
 
-pipeInputs = contactsContactList.values().flatMap(
-    lambda calls: map(formatCall, filter(hasDistInfo, calls)))
+pipeInputs = list(contactsContactList.values()).flatMap(
+    lambda calls: list(map(formatCall, list(filter(hasDistInfo, calls)))))
 distances = pipeInputs.pipe(SparkFiles.get(distScriptName))
-print distances.collect()
+print(distances.collect())
 # Convert our RDD of strings to numeric data so we can compute stats and
 # remove the outliers.
 distanceNumerics = distances.map(lambda string: float(string))
@@ -153,4 +153,4 @@ stddev = stats.stdev()
 mean = stats.mean()
 reasonableDistances = distanceNumerics.filter(
     lambda x: math.fabs(x - mean) < 3 * stddev)
-print reasonableDistances.collect()
+print(reasonableDistances.collect())

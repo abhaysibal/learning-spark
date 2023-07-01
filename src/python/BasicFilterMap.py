@@ -23,4 +23,4 @@ if __name__ == "__main__":
     nums = sc.parallelize([1, 2, 3, 4])
     output = sorted(basicSquareNoOnes(nums).collect())
     for num in output:
-        print "%i " % (num)
+        print("%i " % (num))

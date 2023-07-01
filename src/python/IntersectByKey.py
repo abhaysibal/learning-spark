@@ -21,8 +21,8 @@ def combineIfBothPresent(itrs):
     iter1 = itrs[0].__iter__()
     iter2 = itrs[1].__iter__()
     try:
-        e1 = iter1.next()
-        e2 = iter2.next()
+        e1 = next(iter1)
+        e2 = next(iter2)
         return itertools.chain([e1], [e2], iter1, iter2)
     except StopIteration:
         return []
@@ -40,4 +40,4 @@ if __name__ == "__main__":
     rdd1 = sc.parallelize(
         [("coffee", 1), ("pandas", 2), ("coffee", 3), ("very", 4)])
     rdd2 = sc.parallelize([("pandas", 20), ("pandas", 21)])
-    print intersectByKey(rdd1, rdd2).collect()
+    print(intersectByKey(rdd1, rdd2).collect())

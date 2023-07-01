@@ -27,4 +27,4 @@ if __name__ == "__main__":
     nums = sc.parallelize(
         [("coffee", 1), ("pandas", 2), ("coffee", 3), ("very", 4)])
     avg = perKeyAvg(nums)
-    print avg
+    print(avg)

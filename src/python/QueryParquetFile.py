@@ -8,7 +8,7 @@ import sys
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print "Error usage: QueryParquetFile [sparkmaster] [parquetfile]"
+        print("Error usage: QueryParquetFile [sparkmaster] [parquetfile]")
         sys.exit(-1)
     master = sys.argv[1]
     parquetFile = sys.argv[2]
@@ -17,11 +17,11 @@ if __name__ == "__main__":
     # Load some data in from a Parquet file of name & favouriteAnimal
     rows = sqlCtx.parquetFile(parquetFile)
     names = rows.map(lambda row: row.name)
-    print "Everyone"
-    print names.collect()
+    print("Everyone")
+    print(names.collect())
     # Find the panda lovers
     tbl = rows.registerAsTable("people")
     pandaFriends = sqlCtx.sql("SELECT name FROM people WHERE "+
                               "favouriteAnimal = \"panda\"")
-    print "Panda Friends"
-    print pandaFriends.map(lambda row: row.name).collect()
+    print("Panda Friends")
+    print(pandaFriends.map(lambda row: row.name).collect())

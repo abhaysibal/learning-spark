@@ -26,4 +26,4 @@ if __name__ == "__main__":
         ["coffee", "i really like coffee", "coffee > magic", "panda < coffee"])
     output = sorted(basicKeyValueMapFilter(input).collect())
     for elem in output:
-        print elem
+        print(elem)

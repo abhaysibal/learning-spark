@@ -22,4 +22,4 @@ if __name__ == "__main__":
     sc = SparkContext(master, "Sum")
     nums = sc.parallelize([1, 2, 3, 4])
     output = basicSum(nums)
-    print output
+    print(output)

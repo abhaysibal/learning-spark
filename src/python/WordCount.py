@@ -9,5 +9,5 @@ if __name__ == "__main__":
     sc = SparkContext(master, "WordCount")
     lines = sc.parallelize(["pandas", "i like pandas"])
     result = lines.flatMap(lambda x: x.split(" ")).countByValue()
-    for key, value in result.iteritems():
-        print "%s %i" % (key, value)
+    for key, value in result.items():
+        print("%s %i" % (key, value))

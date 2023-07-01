@@ -15,9 +15,8 @@ from pyspark import SparkContext
 def processCallSigns(signs):
     """Process call signs"""
     http = urllib3.PoolManager()
-    requests = map(
-        lambda x: http.request('GET', "http://qrzcq.com/call/" + x), signs)
-    return map(lambda x: x.data, requests)
+    requests = [http.request('GET', "http://qrzcq.com/call/" + x) for x in signs]
+    return [x.data for x in requests]
 
 
 def fetchCallSigns(input):
@@ -32,4 +31,4 @@ if __name__ == "__main__":
     input = sc.parallelize(["KK6JKQ", "Ve3UoW", "kk6jlk", "W6BB"])
     output = sorted(fetchCallSigns(input).collect())
     for str in output:
-        print "%s " % (str)
+        print("%s " % (str))

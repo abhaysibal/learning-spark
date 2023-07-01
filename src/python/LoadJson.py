@@ -4,7 +4,7 @@ import sys
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print "Error usage: LoadJson [sparkmaster] [inputfile] [outputfile]"
+        print("Error usage: LoadJson [sparkmaster] [inputfile] [outputfile]")
         sys.exit(-1)
     master = sys.argv[1]
     inputFile = sys.argv[2]
@@ -15,4 +15,4 @@ if __name__ == "__main__":
     data.filter(lambda x: 'lovesPandas' in x and x['lovesPandas']).map(
         lambda x: json.dumps(x)).saveAsTextFile(outputFile)
     sc.stop()
-    print "Done!"
+    print("Done!")

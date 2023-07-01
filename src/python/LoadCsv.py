@@ -1,26 +1,26 @@
 from pyspark import SparkContext
 import csv
 import sys
-import StringIO
+import io
 
 
 def loadRecord(line):
     """Parse a CSV line"""
-    input = StringIO.StringIO(line)
+    input = io.StringIO(line)
     reader = csv.DictReader(input, fieldnames=["name", "favouriteAnimal"])
-    return reader.next()
+    return next(reader)
 
 
 def loadRecords(fileNameContents):
     """Load all the records in a given file"""
-    input = StringIO.StringIO(fileNameContents[1])
+    input = io.StringIO(fileNameContents[1])
     reader = csv.DictReader(input, fieldnames=["name", "favouriteAnimal"])
     return reader
 
 
 def writeRecords(records):
     """Write out CSV lines"""
-    output = StringIO.StringIO()
+    output = io.StringIO()
     writer = csv.DictWriter(output, fieldnames=["name", "favouriteAnimal"])
     for record in records:
         writer.writerow(record)
@@ -28,7 +28,7 @@ def writeRecords(records):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print "Error usage: LoadCsv [sparkmaster] [inputfile] [outputfile]"
+        print("Error usage: LoadCsv [sparkmaster] [inputfile] [outputfile]")
         sys.exit(-1)
     master = sys.argv[1]
     inputFile = sys.argv[2]
@@ -46,4 +46,4 @@ if __name__ == "__main__":
     fullFilePandaLovers.mapPartitions(
         writeRecords).saveAsTextFile(outputFile + "fullfile")
     sc.stop()
-    print "Done!"
+    print("Done!")

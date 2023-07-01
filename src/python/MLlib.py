@@ -51,7 +51,7 @@ if __name__ == "__main__":
     negTestExample = tf.transform("Hi Dad, I started studying Spark the other ...".split(" "))
 
     # Now use the learned model to predict spam/ham for new emails.
-    print "Prediction for positive test example: %g" % model.predict(posTestExample)
-    print "Prediction for negative test example: %g" % model.predict(negTestExample)
+    print("Prediction for positive test example: %g" % model.predict(posTestExample))
+    print("Prediction for negative test example: %g" % model.predict(negTestExample))
 
     sc.stop()
